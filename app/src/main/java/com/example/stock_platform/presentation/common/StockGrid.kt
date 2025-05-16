@@ -15,7 +15,7 @@ import com.example.stock_platform.domain.model.gainers_losers.StockItem
 fun StocksGrid(
     stocks: List<StockItem>,
     modifier: Modifier = Modifier,
-    onStockClick: (StockItem) -> Unit = {}
+    onStockClick: (String) -> Unit = {}
 ) {
     val rows = stocks.chunked(2)
 
@@ -30,13 +30,13 @@ fun StocksGrid(
                 StockCard(
                     stockItem = rowItems[0],
                     modifier = Modifier.weight(1f),
-                    onClick = { onStockClick(rowItems[0]) }
+                    onClick = { onStockClick(rowItems[0].ticker) }
                 )
                 if (rowItems.size > 1) {
                     StockCard(
                         stockItem = rowItems[1],
                         modifier = Modifier.weight(1f),
-                        onClick = { onStockClick(rowItems[1]) }
+                        onClick = { onStockClick(rowItems[1].ticker) }
                     )
                 } else {
                     Spacer(modifier = Modifier.weight(1f))

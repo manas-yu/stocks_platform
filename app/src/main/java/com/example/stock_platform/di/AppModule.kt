@@ -1,6 +1,11 @@
 package com.example.stock_platform.di
 
 import android.app.Application
+import androidx.room.Room
+import com.example.stock_platform.data.local.GainersLosersDao
+import com.example.stock_platform.data.local.SearchDao
+import com.example.stock_platform.data.local.StocksDatabase
+import com.example.stock_platform.data.local.StocksTypeConvertor
 import com.example.stock_platform.data.manager.LocalUserManagerImpl
 import com.example.stock_platform.data.remote.StocksApi
 import com.example.stock_platform.data.repository.StocksRepositoryImpl
@@ -11,9 +16,14 @@ import com.example.stock_platform.domain.usecases.app_entry.ReadUserApi
 import com.example.stock_platform.domain.usecases.app_entry.RemoveUserApi
 import com.example.stock_platform.domain.usecases.app_entry.SaveUserApi
 import com.example.stock_platform.domain.usecases.stocks.StockUseCases
+import com.example.stock_platform.domain.usecases.stocks.gainers_losers.GetMostRecentGainersLosers
 import com.example.stock_platform.domain.usecases.stocks.gainers_losers.GetTopGainersLosers
+import com.example.stock_platform.domain.usecases.stocks.gainers_losers.UpsertGainersLosers
 import com.example.stock_platform.domain.usecases.stocks.overview.GetCompanyOverview
+import com.example.stock_platform.domain.usecases.stocks.search.DeleteOlderSearches
+import com.example.stock_platform.domain.usecases.stocks.search.GetRecentSearches
 import com.example.stock_platform.domain.usecases.stocks.search.GetSearchList
+import com.example.stock_platform.domain.usecases.stocks.search.UpsertSearchEntry
 import com.example.stock_platform.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -50,8 +60,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideStocksRepository(
-        stocksApi: StocksApi
-    ):StocksRepository=StocksRepositoryImpl(stocksApi)
+        stocksApi: StocksApi,
+        searchDao: SearchDao,
+        gainersLosersDao: GainersLosersDao
+    ):StocksRepository=StocksRepositoryImpl(stocksApi,searchDao,gainersLosersDao)
 
     @Provides
     @Singleton
@@ -61,8 +73,37 @@ object AppModule {
         return StockUseCases(
             getTopGainersLosers = GetTopGainersLosers(stocksRepository),
             getCompanyOverview = GetCompanyOverview(stocksRepository),
-            getSearchList = GetSearchList(stocksRepository)
+            getSearchList = GetSearchList(stocksRepository),
+            upsertGainersLosers = UpsertGainersLosers(stocksRepository),
+            getMostRecentGainersLosers = GetMostRecentGainersLosers(stocksRepository),
+            getRecentSearches = GetRecentSearches(stocksRepository),
+            upsertSearchEntry = UpsertSearchEntry(stocksRepository),
+            deleteOlderSearches = DeleteOlderSearches(stocksRepository)
         )
     }
+
+    @Provides
+    @Singleton
+    fun provideStocksDatabase(
+        application: Application
+    ): StocksDatabase {
+        return Room.databaseBuilder(
+            context = application,
+            klass=StocksDatabase::class.java,
+            "stocks_database"
+        ).addTypeConverter(StocksTypeConvertor()).fallbackToDestructiveMigration().build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchDao(
+        stocksDatabase: StocksDatabase
+    ): SearchDao = stocksDatabase.searchDao
+
+    @Provides
+    @Singleton
+    fun provideGainersLosersDao(
+        stocksDatabase: StocksDatabase
+    ): GainersLosersDao = stocksDatabase.gainersLosersDao
 
 }

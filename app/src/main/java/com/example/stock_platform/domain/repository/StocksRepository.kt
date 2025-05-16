@@ -10,4 +10,9 @@ interface StocksRepository {
     suspend fun getTopGainersLosers(): ErrorModel<GainersLosersResponse?>
     suspend fun getCompanyOverview(name: String): ErrorModel<OverviewResponse?>
     fun getSearchList(query: String): Flow<ErrorModel<List<BestMatch>?>>
+    fun getRecentSearches(cutoff : Long): Flow<List<BestMatch>?>
+    suspend fun upsertSearchEntry(bestMatch: BestMatch)
+    suspend fun deleteOlderThan(cutoffTime: Long)
+    suspend fun getMostRecentGainersLosers(): GainersLosersResponse?
+    suspend fun upsertGainersLosers(response: GainersLosersResponse)
 }

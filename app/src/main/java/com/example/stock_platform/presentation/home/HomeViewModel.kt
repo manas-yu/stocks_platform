@@ -10,6 +10,8 @@ import com.example.stock_platform.domain.usecases.stocks.StockUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,35 +43,54 @@ class HomeViewModel @Inject constructor(
 
     private fun loadData() {
         viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true)
+            _state.value = _state.value.copy(isGainersLosersLoading = true, isRecentSearchesLoading = true)
             loadTopGainersLosers()
+            loadRecentSearches()
         }
+    }
+    private fun loadRecentSearches(){
+         stockUseCases.getRecentSearches().onEach { result->
+            if(result==null){
+                _state.value = _state.value.copy(
+                    recentSearches = emptyList(),
+                    isRecentSearchesLoading = false
+                )
+            }else{
+                _state.value = _state.value.copy(
+                    recentSearches = result,
+                    isRecentSearchesLoading = false
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun loadTopGainersLosers() {
         viewModelScope.launch {
             when (val result = stockUseCases.getTopGainersLosers()) {
                 is ErrorModel.Success -> {
+                    Log.d("HomeViewModel", "Top Gainers and Losers loaded successfully")
                     val data = result.data
                     _state.value = _state.value.copy(
                         topGainers = data!!.topGainers,
                         topLosers = data.topLosers,
-                        isLoading = false
+                        isGainersLosersLoading = false
                     )
                 }
                 is ErrorModel.Error -> {
+                    Log.e("HomeViewModel", "Error loading top gainers and losers: ${result.exception.message}")
                     _state.value = _state.value.copy(
-                        error = result.exception.localizedMessage ?: "An unexpected error occurred",
-                        isLoading = false
+                        error = "An unexpected error occurred",
+                        isGainersLosersLoading = false
                     )
                     _eventFlow.emit(UIEvent.ShowSnackbar(
                         _state.value.error ?: "Unknown error"
                     ))
                 }
                 else -> {
+                    Log.e("HomeViewModel", "Error loading top gainers and losers: Unknown error")
                     _state.value = _state.value.copy(
                         topGainers = emptyList(),
-                        isLoading = false
+                        isGainersLosersLoading = false
                     )
                 }
             }
