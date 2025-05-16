@@ -7,7 +7,7 @@ import com.example.stock_platform.domain.repository.StocksRepository
 class GetCompanyOverview(
     private val stocksRepository: StocksRepository
 ) {
-    suspend operator fun invoke(symbol: String): ErrorModel<OverviewResponse> {
+    suspend operator fun invoke(symbol: String): ErrorModel<OverviewResponse?> {
         return stocksRepository.getCompanyOverview(symbol)
     }
 }

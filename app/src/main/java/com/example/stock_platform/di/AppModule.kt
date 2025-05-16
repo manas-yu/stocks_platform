@@ -11,8 +11,7 @@ import com.example.stock_platform.domain.usecases.app_entry.ReadUserApi
 import com.example.stock_platform.domain.usecases.app_entry.RemoveUserApi
 import com.example.stock_platform.domain.usecases.app_entry.SaveUserApi
 import com.example.stock_platform.domain.usecases.stocks.StockUseCases
-import com.example.stock_platform.domain.usecases.stocks.gainers_losers.GetTopGainers
-import com.example.stock_platform.domain.usecases.stocks.gainers_losers.GetTopLosers
+import com.example.stock_platform.domain.usecases.stocks.gainers_losers.GetTopGainersLosers
 import com.example.stock_platform.domain.usecases.stocks.overview.GetCompanyOverview
 import com.example.stock_platform.domain.usecases.stocks.search.GetSearchList
 import com.example.stock_platform.util.Constants.BASE_URL
@@ -60,8 +59,7 @@ object AppModule {
         stocksRepository: StocksRepository
     ): StockUseCases {
         return StockUseCases(
-            getTopLosers = GetTopLosers(stocksRepository),
-            getTopGainers = GetTopGainers(stocksRepository),
+            getTopGainersLosers = GetTopGainersLosers(stocksRepository),
             getCompanyOverview = GetCompanyOverview(stocksRepository),
             getSearchList = GetSearchList(stocksRepository)
         )

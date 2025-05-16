@@ -14,18 +14,18 @@ interface StocksApi {
         @Query("function") function: String = "SYMBOL_SEARCH",
         @Query("keywords") keywords: String,
         @Query("apikey") apiKey: String = API_KEY
-    ): SymbolSearchResponse
+    ): SymbolSearchResponse?
 
     @GET("query")
     suspend fun getTopGainersLosers(
         @Query("function") function: String = "TOP_GAINERS_LOSERS",
         @Query("apikey") apiKey: String = API_KEY
-    ): GainersLosersResponse
+    ): GainersLosersResponse?
 
     @GET("query")
     suspend fun getOverview(
         @Query("function") function: String = "OVERVIEW",
         @Query("symbol") symbol: String,
         @Query("apikey") apiKey: String = API_KEY
-    ): OverviewResponse
+    ): OverviewResponse?
 }

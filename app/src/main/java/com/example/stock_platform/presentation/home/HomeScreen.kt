@@ -26,8 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import com.example.stock_platform.R
 import com.example.stock_platform.domain.model.gainers_losers.StockItem
 import com.example.stock_platform.presentation.Dimens.MediumPadding1
+import com.example.stock_platform.presentation.common.EmptyContent
+import com.example.stock_platform.presentation.common.EmptyScreen
 import com.example.stock_platform.presentation.common.SearchBar
 import com.example.stock_platform.presentation.common.StocksGrid
 import kotlinx.coroutines.flow.collectLatest
@@ -84,65 +87,72 @@ fun HomeScreen(
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
-
-                // Recently Searched Section
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    SectionHeader(
-                        title = "Recently Searched",
-                        onViewAllClick = navigateToViewAll
+                if (state.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
+                }else if(state.error != null) {
+                    Text(
+                        text = state.error,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(MediumPadding1)
+                    )
+                    EmptyContent(alphaAnim = 0.3f, message = state.error, R.drawable.ic_network_error)
+                }else{
+                    // Recently Searched Section
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        SectionHeader(
+                            title = "Recently Searched",
+                            onViewAllClick = navigateToViewAll
+                        )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
 
 //                    StocksGrid(
 //                        stocks = state.recentlySearched.take(4),
 //                        modifier = Modifier.padding(horizontal = MediumPadding1),
 //                        onStockClick = navigateToDetails
 //                    )
+                    }
+                    // Top Gainers Section with fixed height
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        SectionHeader(
+                            title = "Top Gainers",
+                            onViewAllClick = navigateToViewAll
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        StocksGrid(
+                            stocks = state.topGainers.take(4),
+                            modifier = Modifier.padding(horizontal = MediumPadding1),
+                            onStockClick = navigateToDetails
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    // Top Losers Section with fixed height
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        SectionHeader(
+                            title = "Top Losers",
+                            onViewAllClick = navigateToViewAll
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        StocksGrid(
+                            stocks = state.topLosers.take(4),
+                            modifier = Modifier.padding(horizontal = MediumPadding1),
+                            onStockClick = navigateToDetails
+                        )
+                    }
+
+                    // Add extra space at the bottom for better scrolling
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
-                // Top Gainers Section with fixed height
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    SectionHeader(
-                        title = "Top Gainers",
-                        onViewAllClick = navigateToViewAll
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    StocksGrid(
-                        stocks = state.topGainers.take(4),
-                        modifier = Modifier.padding(horizontal = MediumPadding1),
-                        onStockClick = navigateToDetails
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                // Top Losers Section with fixed height
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    SectionHeader(
-                        title = "Top Losers",
-                        onViewAllClick = navigateToViewAll
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    StocksGrid(
-                        stocks = state.topLosers.take(4),
-                        modifier = Modifier.padding(horizontal = MediumPadding1),
-                        onStockClick = navigateToDetails
-                    )
-                }
-
-                // Add extra space at the bottom for better scrolling
-                Spacer(modifier = Modifier.height(24.dp))
-            }
-
-            // Loading Indicator
-            if (state.isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
-                )
             }
         }
     }
