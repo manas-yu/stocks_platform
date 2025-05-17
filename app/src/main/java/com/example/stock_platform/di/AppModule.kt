@@ -6,15 +6,9 @@ import com.example.stock_platform.data.local.GainersLosersDao
 import com.example.stock_platform.data.local.SearchDao
 import com.example.stock_platform.data.local.StocksDatabase
 import com.example.stock_platform.data.local.StocksTypeConvertor
-import com.example.stock_platform.data.manager.LocalUserManagerImpl
 import com.example.stock_platform.data.remote.StocksApi
 import com.example.stock_platform.data.repository.StocksRepositoryImpl
-import com.example.stock_platform.domain.manager.LocalUserManager
 import com.example.stock_platform.domain.repository.StocksRepository
-import com.example.stock_platform.domain.usecases.app_entry.AppEntryUseCases
-import com.example.stock_platform.domain.usecases.app_entry.ReadUserApi
-import com.example.stock_platform.domain.usecases.app_entry.RemoveUserApi
-import com.example.stock_platform.domain.usecases.app_entry.SaveUserApi
 import com.example.stock_platform.domain.usecases.stocks.StockUseCases
 import com.example.stock_platform.domain.usecases.stocks.gainers_losers.GetMostRecentGainersLosers
 import com.example.stock_platform.domain.usecases.stocks.gainers_losers.GetTopGainersLosers
@@ -36,19 +30,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-    @Provides
-    @Singleton
-    fun provideLocalUserManager(application: Application): LocalUserManager {
-        return LocalUserManagerImpl(application)
-    }
 
-    @Provides
-    @Singleton
-    fun provideAppEntryUseCases(localUserManager: LocalUserManager) = AppEntryUseCases(
-        saveUserApi = SaveUserApi(localUserManager),
-        removeUserApi = RemoveUserApi(localUserManager),
-        readUserApi = ReadUserApi(localUserManager)
-    )
     @Provides
     @Singleton
     fun provideStocksApi():StocksApi{

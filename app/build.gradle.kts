@@ -5,7 +5,6 @@ plugins {
     id ("com.google.dagger.hilt.android")
     id ("kotlin-parcelize")
 }
-
 android {
     namespace = "com.example.stock_platform"
     compileSdk = 35
@@ -16,7 +15,7 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
+        buildConfigField("String", "API_KEY", "\"${properties["API_KEY"]}\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -38,6 +37,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.7"
