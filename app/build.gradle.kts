@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.stock_platform"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -97,4 +97,7 @@ dependencies {
     implementation ("androidx.room:room-runtime:2.5.2")
     kapt ("androidx.room:room-compiler:2.5.2")
     implementation ("androidx.room:room-ktx:2.5.2")
+
+    //Chart
+    implementation ("co.yml:ycharts:2.1.0")
 }

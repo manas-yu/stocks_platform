@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.stock_platform.R
 import com.example.stock_platform.presentation.common.EmptyContent
 import com.example.stock_platform.presentation.details.components.DetailsTopBar
+import com.example.stockapp.ui.components.StockPriceChart
 import kotlinx.coroutines.flow.collectLatest
 import java.util.Locale
 
@@ -77,7 +78,8 @@ fun DetailsScreen(
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
-
+                    StockPriceChart()
+                    Spacer(modifier = Modifier.height(16.dp))
                     // Company Description Card
                     Card(
                         modifier = Modifier.fillMaxWidth(),
