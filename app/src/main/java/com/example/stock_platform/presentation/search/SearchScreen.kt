@@ -33,6 +33,7 @@ import com.example.stock_platform.domain.model.search.BestMatch
 import com.example.stock_platform.presentation.Dimens.MediumPadding1
 import com.example.stock_platform.presentation.common.EmptyContent
 import com.example.stock_platform.presentation.common.SearchBar
+import com.example.stock_platform.presentation.common.StockTile
 
 @Composable
 fun SearchScreen(
@@ -53,6 +54,7 @@ fun SearchScreen(
             IconButton(onClick = { navigateBack() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back_arrow),
+                    tint= MaterialTheme.colorScheme.onSurface,
                     contentDescription = null
                 )
             }
@@ -116,60 +118,3 @@ fun SearchScreen(
     }
 }
 
-@Composable
-fun StockTile(
-    stock: BestMatch,
-    onItemClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .clickable { onItemClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stock.symbol,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = stock.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = "Type: ${stock.type}",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.weight(0.5f)
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = stock.region,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.weight(0.5f),
-                    maxLines = 1
-                )
-            }
-        }
-    }
-}

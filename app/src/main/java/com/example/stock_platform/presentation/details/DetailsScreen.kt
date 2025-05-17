@@ -63,7 +63,7 @@ fun DetailsScreen(
                 ) {
                     // Company Name and Symbol
                     Text(
-                        text = details.name?: "No name available",
+                        text = details.name,
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -92,7 +92,7 @@ fun DetailsScreen(
                             Spacer(modifier = Modifier.height(8.dp))
 
                             Text(
-                                text = details.description?: "No description available",
+                                text = details.description,
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
@@ -117,12 +117,12 @@ fun DetailsScreen(
                             Row(modifier = Modifier.fillMaxWidth()) {
                                 InfoItem(
                                     title = "Market Cap",
-                                    value = "$${formatLargeNumber(details.marketCapitalization?.toLongOrNull() ?: 0)}",
+                                    value = "$${formatLargeNumber(details.marketCapitalization.toLongOrNull() ?: 0)}",
                                     modifier = Modifier.weight(1f)
                                 )
                                 InfoItem(
                                     title = "P/E Ratio",
-                                    value = details.peRatio?: "-",
+                                    value = details.peRatio,
                                     modifier = Modifier.weight(1f)
                                 )
                             }
@@ -138,7 +138,7 @@ fun DetailsScreen(
                                 InfoItem(
                                     title = "Dividend Yield",
                                     String.format(Locale.US, "%.2f%%",
-                                        (details.dividendYield?.toDoubleOrNull() ?: 0.0) * 100),
+                                        (details.dividendYield.toDoubleOrNull() ?: 0.0) * 100),
                                     modifier = Modifier.weight(1f)
                                 )
                             }
@@ -175,13 +175,13 @@ fun DetailsScreen(
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            InfoItem(title = "Sector", value = details.sector?: "-")
+                            InfoItem(title = "Sector", value = details.sector)
                             Spacer(modifier = Modifier.height(8.dp))
-                            InfoItem(title = "Industry", value = details.industry ?: "-")
+                            InfoItem(title = "Industry", value = details.industry)
                             Spacer(modifier = Modifier.height(8.dp))
-                            InfoItem(title = "Country", value = details.country ?: "-")
+                            InfoItem(title = "Country", value = details.country)
                             Spacer(modifier = Modifier.height(8.dp))
-                            InfoItem(title = "Address", value = details.address ?: "-")
+                            InfoItem(title = "Address", value = details.address)
                         }
                     }
 
@@ -202,28 +202,27 @@ fun DetailsScreen(
 
                             InfoItem(
                                 title = "Revenue (TTM)",
-                                value = "$${formatLargeNumber(details.revenueTTM?.toLongOrNull() ?: 0)}"
+                                value = (details.revenueTTM.toLongOrNull() ?: 0).toString()
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             InfoItem(
                                 title = "EBITDA",
-                                value = "$${formatLargeNumber(details.ebitda?.toLongOrNull() ?: 0)}"
+                                value = (details.ebitda.toLongOrNull() ?: 0).toString()
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             InfoItem(
                                 title = "Profit Margin",
-                                String.format(Locale.US, "%.2f%%",
-                                    (details.profitMargin?.toDoubleOrNull() ?: 0.0) * 100),
-                                )
+                                (details.profitMargin.toDoubleOrNull() ?: 0.0).toString()
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
                             InfoItem(
                                 title = "Operating Margin",
-                                value = "${(details.operatingMarginTTM?.toDoubleOrNull() ?: 0.0) * 100}%"
+                                value = (details.operatingMarginTTM.toDoubleOrNull() ?: 0.0).toString()
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             InfoItem(
                                 title = "Return on Equity",
-                                value = "${(details.returnOnEquityTTM?.toDoubleOrNull() ?: 0.0) * 100}%"
+                                value = (details.returnOnEquityTTM.toDoubleOrNull() ?: 0.0).toString()
                             )
                         }
                     }

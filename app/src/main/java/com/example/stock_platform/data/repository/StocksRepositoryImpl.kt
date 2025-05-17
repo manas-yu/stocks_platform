@@ -20,7 +20,9 @@ class StocksRepositoryImpl(
     override suspend fun getTopGainersLosers(): ErrorModel<GainersLosersResponse?> {
         return try {
             val response = stocksApi.getTopGainersLosers()
-                ?: return ErrorModel.Error(Exception("No data found, API limit reached"))
+            if (response != null && (response.topLosers == null || response.topGainers == null)) {
+                return ErrorModel.Error(Exception("No data found, API limit reached"))
+            }
             ErrorModel.Success(response)
         } catch (e: Exception) {
             ErrorModel.Error(e)
@@ -41,7 +43,7 @@ class StocksRepositoryImpl(
         emit(ErrorModel.Loading)
         try {
             val response = stocksApi.getSearchList(keywords = query)
-            if(response == null) {
+            if (response == null) {
                 emit(ErrorModel.Error(Exception("No data found, API limit reached")))
                 return@flow
             }
@@ -52,7 +54,7 @@ class StocksRepositoryImpl(
     }
 
     override fun getRecentSearches(cutoff: Long): Flow<List<BestMatch>?> {
-       return searchDao.getRecentSearches(cutoff)
+        return searchDao.getRecentSearches(cutoff)
     }
 
     override suspend fun upsertSearchEntry(bestMatch: BestMatch) {

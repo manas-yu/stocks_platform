@@ -32,8 +32,8 @@ import com.example.stock_platform.R
 import com.example.stock_platform.presentation.Dimens.MediumPadding1
 import com.example.stock_platform.presentation.common.EmptyContent
 import com.example.stock_platform.presentation.common.SearchBar
+import com.example.stock_platform.presentation.common.StockTile
 import com.example.stock_platform.presentation.common.StocksGrid
-import com.example.stock_platform.presentation.search.StockTile
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
