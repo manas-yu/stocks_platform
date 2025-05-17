@@ -34,6 +34,7 @@ import com.example.stock_platform.presentation.common.EmptyContent
 import com.example.stock_platform.presentation.common.SearchBar
 import com.example.stock_platform.presentation.common.StockTile
 import com.example.stock_platform.presentation.common.StocksGrid
+import com.example.stock_platform.presentation.view_all.ViewAllType
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -41,7 +42,7 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     navigateToSearch: () -> Unit,
     navigateToDetails: (String) -> Unit,
-    navigateToViewAll: () -> Unit,
+    navigateToViewAll: (ViewAllType) -> Unit,
 ) {
     val state = viewModel.state.value
     val snackbarHostState = remember { SnackbarHostState() }
@@ -82,7 +83,7 @@ fun HomeScreen(
             item {
                 SectionHeader(
                     title = "Recently Searched",
-                    onViewAllClick = navigateToViewAll
+                    onViewAllClick = { navigateToViewAll(ViewAllType.RECENT_SEARCHES) }
                 )
             }
             item {
@@ -104,7 +105,7 @@ fun HomeScreen(
                 }
             }
             if (state.recentSearches.isNotEmpty()) {
-                items(state.recentSearches) { stock ->
+                items(state.recentSearches.take(3)) { stock ->
                     StockTile(
                         stock = stock,
                         onItemClick = { navigateToDetails(stock.symbol) }
@@ -115,7 +116,7 @@ fun HomeScreen(
             item {
                 SectionHeader(
                     title = "Top Gainers",
-                    onViewAllClick = navigateToViewAll
+                    onViewAllClick = { navigateToViewAll(ViewAllType.TOP_GAINERS) }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -149,7 +150,7 @@ fun HomeScreen(
                 item {
                     SectionHeader(
                         title = "Top Losers",
-                        onViewAllClick = navigateToViewAll
+                        onViewAllClick = { navigateToViewAll(ViewAllType.TOP_LOSERS) }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     StocksGrid(

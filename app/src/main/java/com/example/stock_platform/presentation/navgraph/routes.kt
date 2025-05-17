@@ -4,5 +4,6 @@ sealed class Route(val route: String) {
     object HomeScreen : Route("home_screen")
     object DetailScreen : Route("detail_screen")
     object SearchScreen : Route("search_screen")
+    object ViewAllScreen : Route("view_all_screen")
     object AppStartNavigation : Route("app_start_navigation")
 }

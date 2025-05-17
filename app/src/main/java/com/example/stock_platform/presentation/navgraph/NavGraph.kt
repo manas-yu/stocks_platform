@@ -15,6 +15,11 @@ import com.example.stock_platform.presentation.home.HomeScreen
 import com.example.stock_platform.presentation.home.HomeViewModel
 import com.example.stock_platform.presentation.search.SearchScreen
 import com.example.stock_platform.presentation.search.SearchViewModel
+import com.example.stock_platform.presentation.view_all.ViewAllScreen
+import com.example.stock_platform.presentation.view_all.ViewAllType
+import com.example.stock_platform.presentation.view_all.ViewAllViewModel
+
+private const val s = "viewAllType"
 
 @Composable
 fun NavGraph(startDestination: String) {
@@ -34,7 +39,9 @@ fun NavGraph(startDestination: String) {
                     navigateToDetails = {
                         navigateToDetails(navController,it)
                     },
-                   navigateToViewAll = {  },
+                   navigateToViewAll = {
+                          navigateToViewAll(navController,it.name)
+                   },
                 )
             }
             composable(route = Route.SearchScreen.route) {
@@ -60,6 +67,18 @@ fun NavGraph(startDestination: String) {
                     }
                 )
             }
+            composable(route = Route.ViewAllScreen.route + "/{viewAllType}") {
+                val viewModel: ViewAllViewModel = hiltViewModel()
+                ViewAllScreen(
+                    viewModel = viewModel,
+                    onNavigateBack = {
+                        navController.popBackStack()
+                    },
+                    onNavigateToStockDetail = { symbol ->
+                        navigateToDetails(navController,symbol)
+                    }
+                )
+            }
         }
     }
 
@@ -67,4 +86,8 @@ fun NavGraph(startDestination: String) {
 
 private fun navigateToDetails(navController:NavController, symbol: String) {
     navController.navigate(Route.DetailScreen.route + "/$symbol")
+}
+
+private fun navigateToViewAll(navController:NavController, viewAllType: String) {
+    navController.navigate(Route.ViewAllScreen.route + "/$viewAllType")
 }
