@@ -15,7 +15,7 @@ interface SearchDao {
 
     // Get only searches from the last 1 hour
     @Query("SELECT * FROM best_match WHERE timestamp >= :cutoffTime ORDER BY timestamp DESC")
-    suspend fun getRecentSearches(cutoffTime: Long): List<BestMatch>
+    fun getRecentSearches(cutoffTime: Long): Flow<List<BestMatch>>
 
     // Delete searches older than cutoffTime
     @Query("DELETE FROM best_match WHERE timestamp < :cutoffTime")

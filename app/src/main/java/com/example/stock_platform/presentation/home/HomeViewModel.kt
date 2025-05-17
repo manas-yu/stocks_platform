@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stock_platform.domain.model.error_model.ErrorModel
+import com.example.stock_platform.domain.model.search.BestMatch
 import com.example.stock_platform.domain.usecases.stocks.StockUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -42,6 +43,9 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeEvent.LoadRecentSearches -> loadRecentSearches()
+            is HomeEvent.SaveRecentSearch -> {
+                saveRecentSearch(event.stock)
+            }
         }
     }
 
@@ -54,14 +58,25 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private fun saveRecentSearch(stock: BestMatch) {
+        viewModelScope.launch {
+            Log.d("HomeViewModel", "Saving stock to recent searches: ${stock.symbol}")
+            stockUseCases.upsertSearchEntry(stock.copy(timestamp = System.currentTimeMillis()))
+            // No need to call loadRecentSearches() as Flow will update automatically
+        }
+    }
+
     private fun loadRecentSearches() {
         viewModelScope.launch {
-            val result = stockUseCases.getRecentSearches()
-            _state.value = _state.value.copy(
-                recentSearches = result,
-                isRecentSearchesLoading = false
-            )
-            Log.d("HomeViewModel", "Loading recent searches from local database: $result")
+            _state.value = _state.value.copy(isRecentSearchesLoading = true)
+
+            // Subscribe to Flow of recent searches
+            stockUseCases.getRecentSearches().collect { searchResults ->
+                _state.value = _state.value.copy(
+                    recentSearches = searchResults,
+                    isRecentSearchesLoading = false
+                )
+            }
         }
     }
 

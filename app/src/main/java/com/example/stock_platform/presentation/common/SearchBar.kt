@@ -37,7 +37,6 @@ import com.example.stock_platform.R
 import com.example.stock_platform.presentation.Dimens.IconSize
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
@@ -85,11 +84,15 @@ fun SearchBar(
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = colorResource(id = R.color.input_background),
                 unfocusedContainerColor = colorResource(id = R.color.input_background),
-                cursorColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                cursorColor = Color.Black,
                 disabledIndicatorColor = Color.Transparent,
                 errorIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                disabledTextColor = Color.Black,
+                errorTextColor = Color.Black
             ),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),

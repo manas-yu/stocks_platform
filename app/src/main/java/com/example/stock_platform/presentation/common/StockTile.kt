@@ -63,15 +63,15 @@ fun StockTile(
                 Text(
                     text = "Type: ${stock.type}",
                     style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.weight(0.5f)
+                    modifier = Modifier.padding(end = 12.dp)
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = stock.region,
                     style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.weight(0.5f),
-                    maxLines = 1
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }

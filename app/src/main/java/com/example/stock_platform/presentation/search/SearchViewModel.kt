@@ -30,15 +30,6 @@ class SearchViewModel @Inject constructor(
             is SearchEvent.UpdateSearchQuery -> {
                 _state.value = _state.value.copy(searchQuery = event.searchQuery)
             }
-
-            is SearchEvent.SaveRecentSearch -> saveRecentSearch(event.bestMatch)
-        }
-    }
-
-    private fun saveRecentSearch(bestMatch: BestMatch){
-        viewModelScope.launch {
-            Log.d("SearchViewModel", "Saving recent search: ${bestMatch.symbol}")
-            stockUseCases.upsertSearchEntry(bestMatch.copy(timestamp = System.currentTimeMillis()))
         }
     }
 

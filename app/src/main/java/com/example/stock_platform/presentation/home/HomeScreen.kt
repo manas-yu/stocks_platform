@@ -54,6 +54,10 @@ fun HomeScreen(
         }
     }
 
+    LaunchedEffect(key1 = true) {
+        viewModel.onEvent(HomeEvent.LoadRecentSearches)
+    }
+
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->

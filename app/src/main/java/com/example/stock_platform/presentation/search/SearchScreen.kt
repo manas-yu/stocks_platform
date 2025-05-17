@@ -51,9 +51,8 @@ fun SearchScreen(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .padding(MediumPadding1)
     ) {
-        Row {
+        Column  {
             IconButton(onClick = { navigateBack() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back_arrow),
@@ -61,8 +60,11 @@ fun SearchScreen(
                     contentDescription = null
                 )
             }
-            Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             SearchBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = MediumPadding1),
                 readOnly = false,
                 onValueChange = {
                     viewModel.onEvent(SearchEvent.UpdateSearchQuery(it))
@@ -111,9 +113,8 @@ fun SearchScreen(
                         StockTile(
                             stock = stock,
                             onItemClick = {
-                                viewModel.onEvent(SearchEvent.SaveRecentSearch(stock))
                                 homeScreenViewModel.onEvent(
-                                    HomeEvent.LoadRecentSearches
+                                    HomeEvent.SaveRecentSearch(stock)
                                 )
                                 navigateToDetails(stock.symbol)
                             }

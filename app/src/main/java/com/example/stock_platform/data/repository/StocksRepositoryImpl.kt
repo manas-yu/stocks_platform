@@ -60,7 +60,7 @@ class StocksRepositoryImpl(
         }
     }
 
-    override suspend fun getRecentSearches(cutoff: Long): List<BestMatch> {
+    override fun getRecentSearches(cutoff: Long): Flow<List<BestMatch>> {
         return searchDao.getRecentSearches(cutoff)
     }
 
