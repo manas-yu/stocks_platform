@@ -27,7 +27,7 @@ fun StockTile(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .padding(vertical = 4.dp, horizontal = 8.dp)
             .clickable { onItemClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -44,6 +44,7 @@ fun StockTile(
                     text = stock.symbol,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(end = 12.dp),
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(

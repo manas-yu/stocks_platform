@@ -39,8 +39,10 @@ fun NavGraph(startDestination: String) {
             }
             composable(route = Route.SearchScreen.route) {
                 val viewModel: SearchViewModel = hiltViewModel()
+                val homeScreenViewModel: HomeViewModel = hiltViewModel()
                 SearchScreen(
                     viewModel = viewModel,
+                    homeScreenViewModel = homeScreenViewModel,
                     navigateToDetails = { symbol ->
                         navigateToDetails(navController,symbol)
                     },

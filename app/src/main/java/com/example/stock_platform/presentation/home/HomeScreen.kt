@@ -44,18 +44,12 @@ fun HomeScreen(
     navigateToViewAll: () -> Unit,
 ) {
     val state = viewModel.state.value
-    val scrollState = rememberScrollState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    // Handle UI events
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
-            when (event) {
-                is HomeViewModel.UIEvent.ShowSnackbar -> {
-                    snackbarHostState.showSnackbar(
-                        message = event.message
-                    )
-                }
+            if (event is HomeViewModel.UIEvent.ShowSnackbar) {
+                snackbarHostState.showSnackbar(message = event.message)
             }
         }
     }
@@ -63,19 +57,13 @@ fun HomeScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
-        Box(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .statusBarsPadding()
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(scrollState)
-                    .padding(top = MediumPadding1)
-                    .statusBarsPadding()
-            ) {
-                // Search Bar
+            item {
                 SearchBar(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -86,83 +74,85 @@ fun HomeScreen(
                     onSearch = {},
                     text = ""
                 )
-                // Recently Searched Section
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    SectionHeader(
-                        title = "Recently Searched",
-                        onViewAllClick = navigateToViewAll
+            }
+            item {
+                SectionHeader(
+                    title = "Recently Searched",
+                    onViewAllClick = navigateToViewAll
+                )
+            }
+            item {
+                when {
+                    state.isRecentSearchesLoading -> Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+
+                    state.recentSearches.isEmpty() -> EmptyContent(
+                        alphaAnim = 0.3f,
+                        message = "No recent searches",
+                        R.drawable.ic_search_document
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
-                    if (state.isRecentSearchesLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
-                        )
-                    } else if (state.recentSearches.isEmpty()) {
-                        EmptyContent(
-                            alphaAnim = 0.3f,
-                            message = "No recent searches",
-                            R.drawable.ic_search_document
-                        )
-                    } else {
-                        LazyColumn {
-                            items(state.recentSearches) { stock ->
-                                StockTile(
-                                    stock = stock,
-                                    onItemClick = {
-                                        navigateToDetails(stock.symbol)
-                                    }
-                                )
-                            }
-                        }
-                    }
+                    else -> Unit // handled below
                 }
-                Spacer(modifier = Modifier.height(24.dp))
+            }
+            if (state.recentSearches.isNotEmpty()) {
+                items(state.recentSearches) { stock ->
+                    StockTile(
+                        stock = stock,
+                        onItemClick = { navigateToDetails(stock.symbol) }
+                    )
+                }
+            }
+            item { Spacer(modifier = Modifier.height(24.dp)) }
+            item {
                 SectionHeader(
                     title = "Top Gainers",
                     onViewAllClick = navigateToViewAll
                 )
-                if (state.isGainersLosersLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
-                } else if (state.error != null) {
-                    EmptyContent(
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            item {
+                when {
+                    state.isGainersLosersLoading -> Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+
+                    state.error != null -> EmptyContent(
                         alphaAnim = 0.3f,
                         message = state.error,
                         R.drawable.ic_network_error
                     )
-                } else {
-                    // Top Gainers Section with fixed height
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        StocksGrid(
-                            stocks = state.topGainers.take(4),
-                            modifier = Modifier.padding(horizontal = MediumPadding1),
-                            onStockClick = navigateToDetails
-                        )
 
-                    }
-
+                    else -> Unit
+                }
+            }
+            if (!state.isGainersLosersLoading && state.error == null) {
+                item {
+                    StocksGrid(
+                        stocks = state.topGainers.take(4),
+                        modifier = Modifier.padding(horizontal = MediumPadding1),
+                        onStockClick = navigateToDetails
+                    )
                     Spacer(modifier = Modifier.height(32.dp))
-
-                    // Top Losers Section with fixed height
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        SectionHeader(
-                            title = "Top Losers",
-                            onViewAllClick = navigateToViewAll
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        StocksGrid(
-                            stocks = state.topLosers.take(4),
-                            modifier = Modifier.padding(horizontal = MediumPadding1),
-                            onStockClick = navigateToDetails
-                        )
-                    }
-
-                    // Add extra space at the bottom for better scrolling
+                }
+                item {
+                    SectionHeader(
+                        title = "Top Losers",
+                        onViewAllClick = navigateToViewAll
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    StocksGrid(
+                        stocks = state.topLosers.take(4),
+                        modifier = Modifier.padding(horizontal = MediumPadding1),
+                        onStockClick = navigateToDetails
+                    )
                     Spacer(modifier = Modifier.height(24.dp))
                 }
             }

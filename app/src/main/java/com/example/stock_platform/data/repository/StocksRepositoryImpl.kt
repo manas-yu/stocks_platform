@@ -20,7 +20,8 @@ class StocksRepositoryImpl(
     override suspend fun getTopGainersLosers(): ErrorModel<GainersLosersResponse?> {
         return try {
             val response = stocksApi.getTopGainersLosers()
-            if (response != null && (response.topLosers == null || response.topGainers == null)) {
+                ?: return ErrorModel.Error(Exception("Unknown Error"))
+            if ((response.topLosers == null || response.topGainers == null)) {
                 return ErrorModel.Error(Exception("No data found, API limit reached"))
             }
             ErrorModel.Success(response)
@@ -32,7 +33,10 @@ class StocksRepositoryImpl(
     override suspend fun getCompanyOverview(name: String): ErrorModel<OverviewResponse?> {
         return try {
             val overview = stocksApi.getOverview(symbol = name)
-                ?: return ErrorModel.Error(Exception("No data found, API limit reached"))
+                ?: return ErrorModel.Error(Exception("Unknown Error"))
+            if (overview.symbol == null) {
+                return ErrorModel.Error(Exception("No Company Overview Available for this symbol"))
+            }
             ErrorModel.Success(overview)
         } catch (e: Exception) {
             ErrorModel.Error(e)
@@ -42,27 +46,30 @@ class StocksRepositoryImpl(
     override fun getSearchList(query: String): Flow<ErrorModel<List<BestMatch>?>> = flow {
         emit(ErrorModel.Loading)
         try {
-            val response = stocksApi.getSearchList(keywords = query)
-            if (response == null) {
+            val response = stocksApi.getSearchList(keywords = query) ?: return@flow emit(
+                ErrorModel.Error(Exception("Unknown Error"))
+            )
+            if (response.bestMatches == null) {
                 emit(ErrorModel.Error(Exception("No data found, API limit reached")))
                 return@flow
             }
             emit(ErrorModel.Success(response.bestMatches))
+
         } catch (e: Exception) {
             emit(ErrorModel.Error(e))
         }
     }
 
-    override fun getRecentSearches(cutoff: Long): Flow<List<BestMatch>?> {
+    override suspend fun getRecentSearches(cutoff: Long): List<BestMatch> {
         return searchDao.getRecentSearches(cutoff)
     }
 
     override suspend fun upsertSearchEntry(bestMatch: BestMatch) {
-        return searchDao.upsert(bestMatch)
+        searchDao.upsert(bestMatch)
     }
 
     override suspend fun deleteOlderThan(cutoffTime: Long) {
-        return searchDao.deleteOlderThan(cutoffTime)
+        searchDao.deleteOlderThan(cutoffTime)
     }
 
     override suspend fun getMostRecentGainersLosers(): GainersLosersResponse? {
@@ -70,7 +77,7 @@ class StocksRepositoryImpl(
     }
 
     override suspend fun upsertGainersLosers(response: GainersLosersResponse) {
-        return gainersLosersDao.upsert(response)
+        gainersLosersDao.upsert(response)
     }
 }
 

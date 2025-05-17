@@ -1,14 +1,17 @@
 package com.example.stock_platform.presentation.search
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stock_platform.domain.model.error_model.ErrorModel
+import com.example.stock_platform.domain.model.search.BestMatch
 import com.example.stock_platform.domain.usecases.stocks.StockUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +30,15 @@ class SearchViewModel @Inject constructor(
             is SearchEvent.UpdateSearchQuery -> {
                 _state.value = _state.value.copy(searchQuery = event.searchQuery)
             }
+
+            is SearchEvent.SaveRecentSearch -> saveRecentSearch(event.bestMatch)
+        }
+    }
+
+    private fun saveRecentSearch(bestMatch: BestMatch){
+        viewModelScope.launch {
+            Log.d("SearchViewModel", "Saving recent search: ${bestMatch.symbol}")
+            stockUseCases.upsertSearchEntry(bestMatch.copy(timestamp = System.currentTimeMillis()))
         }
     }
 
@@ -63,7 +75,7 @@ class SearchViewModel @Inject constructor(
                     is ErrorModel.Error -> {
                         _state.value = _state.value.copy(
                             isLoading = false,
-                            error = result.exception.message ?: "Unknown error occurred"
+                            error = result.exception.message
                         )
                     }
                 }

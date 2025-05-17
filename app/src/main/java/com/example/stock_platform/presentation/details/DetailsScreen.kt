@@ -32,7 +32,7 @@ fun DetailsScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
-            when(event) {
+            when (event) {
                 is DetailsViewModel.UIEvent.ShowSnackbar -> {
                     scaffoldState.showSnackbar(message = event.message)
                 }
@@ -137,8 +137,10 @@ fun DetailsScreen(
                                 )
                                 InfoItem(
                                     title = "Dividend Yield",
-                                    String.format(Locale.US, "%.2f%%",
-                                        (details.dividendYield.toDoubleOrNull() ?: 0.0) * 100),
+                                    String.format(
+                                        Locale.US, "%.2f%%",
+                                        (details.dividendYield.toDoubleOrNull() ?: 0.0) * 100
+                                    ),
                                     modifier = Modifier.weight(1f)
                                 )
                             }
@@ -217,12 +219,14 @@ fun DetailsScreen(
                             Spacer(modifier = Modifier.height(8.dp))
                             InfoItem(
                                 title = "Operating Margin",
-                                value = (details.operatingMarginTTM.toDoubleOrNull() ?: 0.0).toString()
+                                value = (details.operatingMarginTTM.toDoubleOrNull()
+                                    ?: 0.0).toString()
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             InfoItem(
                                 title = "Return on Equity",
-                                value = (details.returnOnEquityTTM.toDoubleOrNull() ?: 0.0).toString()
+                                value = (details.returnOnEquityTTM.toDoubleOrNull()
+                                    ?: 0.0).toString()
                             )
                         }
                     }
@@ -250,31 +254,6 @@ fun DetailsScreen(
                         message = state.error,
                         iconId = R.drawable.ic_network_error
                     )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Button(
-                        onClick = {
-                            viewModel.onEvent(DetailsEvent.LoadStockDetails)
-                        }
-                    ) {
-                        Text(text = "Retry")
-                    }
-                }
-            }
-            if (state.error == null && !state.isLoading &&state.stockDetails==null) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    EmptyContent(
-                        alphaAnim = 0.3f,
-                        message = "Company Overview Not Available",
-                        iconId = R.drawable.ic_search_document
-                    )
                 }
             }
         }
@@ -289,6 +268,7 @@ fun formatLargeNumber(number: Long): String {
         else -> number.toString()
     }
 }
+
 @Composable
 fun SectionTitle(title: String) {
     Text(
@@ -297,6 +277,7 @@ fun SectionTitle(title: String) {
         fontWeight = FontWeight.Bold
     )
 }
+
 @Composable
 fun InfoItem(
     title: String,

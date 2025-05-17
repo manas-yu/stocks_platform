@@ -18,7 +18,7 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
     private val stockUseCases: StockUseCases,
     savedStateHandle: SavedStateHandle
-): ViewModel() {
+) : ViewModel() {
 
     private val _state = mutableStateOf(DetailsState())
     val state: State<DetailsState> = _state
@@ -34,7 +34,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     fun onEvent(event: DetailsEvent) {
-        when(event) {
+        when (event) {
             is DetailsEvent.LoadStockDetails -> {
                 getCompanyOverview(_state.value.stockSymbol)
             }
@@ -48,23 +48,27 @@ class DetailsViewModel @Inject constructor(
                 error = null
             )
 
-            when(val result = stockUseCases.getCompanyOverview(symbol)) {
+            when (val result = stockUseCases.getCompanyOverview(symbol)) {
                 is ErrorModel.Success -> {
                     Log.e("DetailsViewModel", "getCompanyOverview: ${result.data}")
+                    val data = result.data
                     _state.value = _state.value.copy(
-                        stockDetails = result.data,
+                        stockDetails = data,
                         isLoading = false
                     )
                 }
+
                 is ErrorModel.Error -> {
                     Log.e("DetailsViewModel", "getCompanyOverview: ${result.exception.message}")
                     _state.value = _state.value.copy(
                         error = result.exception.message ?: "An unexpected error occurred",
                         isLoading = false
                     )
-                    _eventFlow.emit(UIEvent.ShowSnackbar(
-                        result.exception.message ?: "An unexpected error occurred"
-                    ))
+                    _eventFlow.emit(
+                        UIEvent.ShowSnackbar(
+                            result.exception.message ?: "An unexpected error occurred"
+                        )
+                    )
                 }
 
                 else -> {
@@ -79,6 +83,6 @@ class DetailsViewModel @Inject constructor(
     }
 
     sealed class UIEvent {
-        data class ShowSnackbar(val message: String): UIEvent()
+        data class ShowSnackbar(val message: String) : UIEvent()
     }
 }

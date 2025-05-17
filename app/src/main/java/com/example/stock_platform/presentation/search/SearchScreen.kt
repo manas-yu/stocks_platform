@@ -34,10 +34,13 @@ import com.example.stock_platform.presentation.Dimens.MediumPadding1
 import com.example.stock_platform.presentation.common.EmptyContent
 import com.example.stock_platform.presentation.common.SearchBar
 import com.example.stock_platform.presentation.common.StockTile
+import com.example.stock_platform.presentation.home.HomeEvent
+import com.example.stock_platform.presentation.home.HomeViewModel
 
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel,
+    homeScreenViewModel: HomeViewModel,
     navigateToDetails: (String) -> Unit,
     navigateBack: () -> Unit
 ) {
@@ -108,6 +111,10 @@ fun SearchScreen(
                         StockTile(
                             stock = stock,
                             onItemClick = {
+                                viewModel.onEvent(SearchEvent.SaveRecentSearch(stock))
+                                homeScreenViewModel.onEvent(
+                                    HomeEvent.LoadRecentSearches
+                                )
                                 navigateToDetails(stock.symbol)
                             }
                         )
