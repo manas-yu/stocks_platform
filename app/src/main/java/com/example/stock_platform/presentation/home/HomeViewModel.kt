@@ -77,6 +77,7 @@ class HomeViewModel @Inject constructor(
                     isRecentSearchesLoading = false
                 )
             }
+            stockUseCases.deleteOlderSearches()
         }
     }
 
@@ -84,7 +85,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             Log.d("HomeViewModel", "Loading top gainers and losers")
             val recentResult = stockUseCases.getMostRecentGainersLosers()
-            if (recentResult != null) {
+            if (recentResult != null&&System.currentTimeMillis() - recentResult.timeStamp < 3600000) {
                 Log.d(
                     "HomeViewModel",
                     "Loaded recent top gainers and losers from local database ${recentResult.topGainers}"
@@ -107,7 +108,7 @@ class HomeViewModel @Inject constructor(
                             topLosers = data.topLosers,
                             isGainersLosersLoading = false
                         )
-                        stockUseCases.upsertGainersLosers(data)
+                        stockUseCases.upsertGainersLosers(data.copy(timeStamp = System.currentTimeMillis()))
                     } else {
                         _state.value = _state.value.copy(
                             error = "An unexpected error occurred",
