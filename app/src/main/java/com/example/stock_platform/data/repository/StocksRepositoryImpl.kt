@@ -62,6 +62,8 @@ class StocksRepositoryImpl(
         }
     }
 
+    // Functions related to managing cached data
+
     override fun getRecentSearches(cutoff: Long): Flow<List<BestMatch>> {
         return searchDao.getRecentSearches(cutoff)
     }

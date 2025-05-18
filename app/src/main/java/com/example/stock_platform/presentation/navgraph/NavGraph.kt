@@ -55,6 +55,9 @@ fun NavGraph(startDestination: String) {
                     },
                 )
             }
+
+            // This is the DetailsScreen route with a dynamic argument symbol which
+            // can be used to display details of a specific stock while ticker search API call
             composable(route = Route.DetailScreen.route + "/{symbol}") {
                 val viewModel: DetailsViewModel = hiltViewModel()
                 DetailsScreen(
@@ -64,6 +67,9 @@ fun NavGraph(startDestination: String) {
                     }
                 )
             }
+
+            // This is the ViewAllScreen route with a dynamic argument viewAllType which
+            // can be used to differentiate between different types of data to be displayed
             composable(route = Route.ViewAllScreen.route + "/{viewAllType}") {
                 val viewModel: ViewAllViewModel = hiltViewModel()
                 ViewAllScreen(

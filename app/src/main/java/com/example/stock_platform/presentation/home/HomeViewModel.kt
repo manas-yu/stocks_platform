@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stock_platform.domain.model.error_model.ErrorModel
 import com.example.stock_platform.domain.model.search.BestMatch
 import com.example.stock_platform.domain.usecases.stocks.StockUseCases
@@ -27,6 +28,15 @@ class HomeViewModel @Inject constructor(
 
     init {
         loadData()
+        deleteOlderData()
+    }
+
+    private fun deleteOlderData(){
+        viewModelScope.launch {
+            // Clear older searches
+            stockUseCases.deleteOlderSearches()
+            stockUseCases.deleteOlderOverviews()
+        }
     }
 
     fun onEvent(event: HomeEvent) {
@@ -66,10 +76,6 @@ class HomeViewModel @Inject constructor(
     private fun loadRecentSearches() {
         viewModelScope.launch {
             _state.value = _state.value.copy(isRecentSearchesLoading = true)
-
-            // Clear older searches and overviews
-            stockUseCases.deleteOlderSearches()
-            stockUseCases.deleteOlderOverviews()
 
             // Subscribe to Flow of recent searches
             stockUseCases.getRecentSearches().collect { searchResults ->
