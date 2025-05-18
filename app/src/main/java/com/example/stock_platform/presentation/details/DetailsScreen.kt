@@ -75,7 +75,7 @@ fun DetailsScreen(
                 ) {
                     // Company Name and Symbol
                     Text(
-                        text = details.name,
+                        text = details.name?: "N/A",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -105,7 +105,7 @@ fun DetailsScreen(
                             Spacer(modifier = Modifier.height(8.dp))
 
                             Text(
-                                text = details.description,
+                                text = details.description?: "N/A",
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
@@ -130,12 +130,12 @@ fun DetailsScreen(
                             Row(modifier = Modifier.fillMaxWidth()) {
                                 InfoItem(
                                     title = "Market Cap",
-                                    value = "$${formatLargeNumber(details.marketCapitalization.toLongOrNull() ?: 0)}",
+                                    value = "$${formatLargeNumber(details.marketCapitalization?.toLongOrNull() ?: 0)}",
                                     modifier = Modifier.weight(1f)
                                 )
                                 InfoItem(
                                     title = "P/E Ratio",
-                                    value = details.peRatio,
+                                    value = details.peRatio?: "N/A",
                                     modifier = Modifier.weight(1f)
                                 )
                             }
@@ -152,7 +152,7 @@ fun DetailsScreen(
                                     title = "Dividend Yield",
                                     String.format(
                                         Locale.US, "%.2f%%",
-                                        (details.dividendYield.toDoubleOrNull() ?: 0.0) * 100
+                                        (details.dividendYield?.toDoubleOrNull() ?: 0.0) * 100
                                     ),
                                     modifier = Modifier.weight(1f)
                                 )
@@ -217,28 +217,28 @@ fun DetailsScreen(
 
                             InfoItem(
                                 title = "Revenue (TTM)",
-                                value = (details.revenueTTM.toLongOrNull() ?: 0).toString()
+                                value = (details.revenueTTM?.toLongOrNull() ?: 0).toString()
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             InfoItem(
                                 title = "EBITDA",
-                                value = (details.ebitda.toLongOrNull() ?: 0).toString()
+                                value = (details.ebitda?.toLongOrNull() ?: 0).toString()
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             InfoItem(
                                 title = "Profit Margin",
-                                (details.profitMargin.toDoubleOrNull() ?: 0.0).toString()
+                                (details.profitMargin?.toDoubleOrNull() ?: 0.0).toString()
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             InfoItem(
                                 title = "Operating Margin",
-                                value = (details.operatingMarginTTM.toDoubleOrNull()
+                                value = (details.operatingMarginTTM?.toDoubleOrNull()
                                     ?: 0.0).toString()
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             InfoItem(
                                 title = "Return on Equity",
-                                value = (details.returnOnEquityTTM.toDoubleOrNull()
+                                value = (details.returnOnEquityTTM?.toDoubleOrNull()
                                     ?: 0.0).toString()
                             )
                         }
@@ -283,9 +283,9 @@ fun formatLargeNumber(number: Long): String {
 }
 
 @Composable
-fun SectionTitle(title: String) {
+fun SectionTitle(title: String?) {
     Text(
-        text = title,
+        text = title?: "N/A",
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.Bold
     )
@@ -294,7 +294,7 @@ fun SectionTitle(title: String) {
 @Composable
 fun InfoItem(
     title: String,
-    value: String,
+    value: String?,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -307,7 +307,7 @@ fun InfoItem(
         Spacer(modifier = Modifier.height(2.dp))
 
         Text(
-            text = value,
+            text = value?: "N/A",
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Medium
         )

@@ -86,7 +86,7 @@ class ViewAllViewModel @Inject constructor(
 
             if (_state.value.viewAllType == ViewAllType.TOP_GAINERS) {
                 if (recentResult != null) {
-                    if (recentResult.topGainers.isEmpty()) {
+                    if (recentResult.topGainers!!.isEmpty()) {
                         _state.value = _state.value.copy(
                             error = "No Top Gainers Found",
                             isLoading = false
@@ -106,7 +106,7 @@ class ViewAllViewModel @Inject constructor(
                 }
             } else {
                 if (recentResult != null) {
-                    if (recentResult.topLosers.isEmpty()) {
+                    if (recentResult.topLosers!!.isEmpty()) {
                         _state.value = _state.value.copy(
                             error = "No Top Losers Found",
                             isLoading = false

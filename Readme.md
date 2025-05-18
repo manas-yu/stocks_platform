@@ -11,7 +11,7 @@
   - **Recently Searched** stocks/ETFs
   - **Top Gainers**
   - **Top Losers**
-  - Company Overview
+  - **Company Overview**
 -  **Grid of cards** including:
   - Ticker Symbol
   - Company Name
@@ -50,7 +50,7 @@
 
 ## 🔐 API Integration
 
-The application uses the [Alpha Vantage API](https://www.alphavantage.co/documentation/) for:
+The application uses and caches the [Alpha Vantage API](https://www.alphavantage.co/documentation/) for:
 
 - 📈 **Top Gainers/Losers:** via Alpha Intelligence endpoints
 - 🏢 **Company Overview:** Basic fundamental data

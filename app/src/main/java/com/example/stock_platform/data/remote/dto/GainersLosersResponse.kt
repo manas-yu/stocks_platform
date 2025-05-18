@@ -9,9 +9,9 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "gainers_losers")
 data class GainersLosersResponse(
     @PrimaryKey val id: Int = 0,
-    @SerializedName("last_updated") val lastUpdated: String,
+    @SerializedName("last_updated") val lastUpdated: String?,
     val metadata: String,
-    @SerializedName("top_gainers") val topGainers: List<TopGainer>,
-    @SerializedName("top_losers") val topLosers: List<TopLoser>,
+    @SerializedName("top_gainers") val topGainers: List<TopGainer>?,
+    @SerializedName("top_losers") val topLosers: List<TopLoser>?,
     val timeStamp: Long = System.currentTimeMillis()
 )

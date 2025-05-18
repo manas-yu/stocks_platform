@@ -91,8 +91,8 @@ class HomeViewModel @Inject constructor(
                     "Loaded recent top gainers and losers from local database ${recentResult.topGainers}"
                 )
                 _state.value = _state.value.copy(
-                    topGainers = recentResult.topGainers,
-                    topLosers = recentResult.topLosers,
+                    topGainers = recentResult.topGainers?: emptyList(),
+                    topLosers = recentResult.topLosers?: emptyList(),
                     isGainersLosersLoading = false
                 )
                 return@launch
@@ -104,8 +104,8 @@ class HomeViewModel @Inject constructor(
                     val data = networkResult.data
                     if (data != null) {
                         _state.value = _state.value.copy(
-                            topGainers = data.topGainers,
-                            topLosers = data.topLosers,
+                            topGainers = data.topGainers?: emptyList(),
+                            topLosers = data.topLosers ?: emptyList(),
                             isGainersLosersLoading = false
                         )
                         stockUseCases.upsertGainersLosers(data.copy(timeStamp = System.currentTimeMillis()))
