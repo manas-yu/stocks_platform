@@ -15,4 +15,7 @@ interface StocksRepository {
     suspend fun deleteOlderThan(cutoffTime: Long)
     suspend fun getMostRecentGainersLosers(): GainersLosersResponse?
     suspend fun upsertGainersLosers(response: GainersLosersResponse)
+    suspend fun insertOverview(overviewResponse: OverviewResponse)
+    suspend fun getOverview(symbol: String): OverviewResponse?
+    suspend fun deleteOlderOverviews(cutoff:Long)
 }

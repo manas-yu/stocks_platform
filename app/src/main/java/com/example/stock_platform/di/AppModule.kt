@@ -3,6 +3,7 @@ package com.example.stock_platform.di
 import android.app.Application
 import androidx.room.Room
 import com.example.stock_platform.data.local.GainersLosersDao
+import com.example.stock_platform.data.local.OverviewDao
 import com.example.stock_platform.data.local.SearchDao
 import com.example.stock_platform.data.local.StocksDatabase
 import com.example.stock_platform.data.local.StocksTypeConvertor
@@ -13,7 +14,10 @@ import com.example.stock_platform.domain.usecases.stocks.StockUseCases
 import com.example.stock_platform.domain.usecases.stocks.gainers_losers.GetMostRecentGainersLosers
 import com.example.stock_platform.domain.usecases.stocks.gainers_losers.GetTopGainersLosers
 import com.example.stock_platform.domain.usecases.stocks.gainers_losers.UpsertGainersLosers
+import com.example.stock_platform.domain.usecases.stocks.overview.DeleteOlderOverviews
+import com.example.stock_platform.domain.usecases.stocks.overview.GetCachedOverview
 import com.example.stock_platform.domain.usecases.stocks.overview.GetCompanyOverview
+import com.example.stock_platform.domain.usecases.stocks.overview.InsertOverview
 import com.example.stock_platform.domain.usecases.stocks.search.DeleteOlderSearches
 import com.example.stock_platform.domain.usecases.stocks.search.GetRecentSearches
 import com.example.stock_platform.domain.usecases.stocks.search.GetSearchList
@@ -39,13 +43,15 @@ object AppModule {
             .build()
             .create(StocksApi::class.java)
     }
+
     @Provides
     @Singleton
     fun provideStocksRepository(
         stocksApi: StocksApi,
         searchDao: SearchDao,
-        gainersLosersDao: GainersLosersDao
-    ):StocksRepository=StocksRepositoryImpl(stocksApi,searchDao,gainersLosersDao)
+        gainersLosersDao: GainersLosersDao,
+        overviewDao: OverviewDao
+    ):StocksRepository=StocksRepositoryImpl(stocksApi,searchDao,gainersLosersDao,overviewDao)
 
     @Provides
     @Singleton
@@ -60,7 +66,10 @@ object AppModule {
             getMostRecentGainersLosers = GetMostRecentGainersLosers(stocksRepository),
             getRecentSearches = GetRecentSearches(stocksRepository),
             upsertSearchEntry = UpsertSearchEntry(stocksRepository),
-            deleteOlderSearches = DeleteOlderSearches(stocksRepository)
+            deleteOlderSearches = DeleteOlderSearches(stocksRepository),
+            deleteOlderOverviews = DeleteOlderOverviews(stocksRepository),
+            insertOverview = InsertOverview(stocksRepository),
+            getCachedOverview = GetCachedOverview(stocksRepository)
         )
     }
 
@@ -87,5 +96,11 @@ object AppModule {
     fun provideGainersLosersDao(
         stocksDatabase: StocksDatabase
     ): GainersLosersDao = stocksDatabase.gainersLosersDao
+
+    @Provides
+    @Singleton
+    fun provideOverviewDao(
+        stocksDatabase: StocksDatabase
+    ): OverviewDao = stocksDatabase.overviewDao
 
 }

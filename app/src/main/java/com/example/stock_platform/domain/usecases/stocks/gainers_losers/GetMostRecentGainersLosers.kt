@@ -1,6 +1,5 @@
 package com.example.stock_platform.domain.usecases.stocks.gainers_losers
 
-import com.example.stock_platform.data.local.GainersLosersDao
 import com.example.stock_platform.data.remote.dto.GainersLosersResponse
 import com.example.stock_platform.domain.repository.StocksRepository
 

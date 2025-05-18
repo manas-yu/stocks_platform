@@ -1,6 +1,7 @@
 package com.example.stock_platform.data.repository
 
 import com.example.stock_platform.data.local.GainersLosersDao
+import com.example.stock_platform.data.local.OverviewDao
 import com.example.stock_platform.data.local.SearchDao
 import com.example.stock_platform.data.remote.StocksApi
 import com.example.stock_platform.data.remote.dto.GainersLosersResponse
@@ -14,7 +15,8 @@ import kotlinx.coroutines.flow.flow
 class StocksRepositoryImpl(
     private val stocksApi: StocksApi,
     private val searchDao: SearchDao,
-    private val gainersLosersDao: GainersLosersDao
+    private val gainersLosersDao: GainersLosersDao,
+    private val overviewDao: OverviewDao
 ) : StocksRepository {
 
     override suspend fun getTopGainersLosers(): ErrorModel<GainersLosersResponse?> {
@@ -78,6 +80,18 @@ class StocksRepositoryImpl(
 
     override suspend fun upsertGainersLosers(response: GainersLosersResponse) {
         gainersLosersDao.upsert(response)
+    }
+
+    override suspend fun insertOverview(overviewResponse: OverviewResponse) {
+        overviewDao.insertOverview(overviewResponse)
+    }
+
+    override suspend fun getOverview(symbol: String): OverviewResponse? {
+        return overviewDao.getOverviewBySymbol(symbol)
+    }
+
+    override suspend fun deleteOlderOverviews(cutoff: Long) {
+        overviewDao.deleteEntriesOlderThan(cutoff)
     }
 }
 

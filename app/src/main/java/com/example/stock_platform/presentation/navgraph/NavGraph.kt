@@ -1,8 +1,6 @@
 package com.example.stock_platform.presentation.navgraph
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -16,7 +14,6 @@ import com.example.stock_platform.presentation.home.HomeViewModel
 import com.example.stock_platform.presentation.search.SearchScreen
 import com.example.stock_platform.presentation.search.SearchViewModel
 import com.example.stock_platform.presentation.view_all.ViewAllScreen
-import com.example.stock_platform.presentation.view_all.ViewAllType
 import com.example.stock_platform.presentation.view_all.ViewAllViewModel
 
 private const val s = "viewAllType"

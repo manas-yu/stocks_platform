@@ -1,7 +1,9 @@
 package com.example.stock_platform.data.remote.dto
 
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "company_overview", primaryKeys = ["symbol"])
 data class OverviewResponse(
     @SerializedName("Symbol") val symbol: String,
     @SerializedName("AssetType") val assetType: String,
@@ -54,5 +56,6 @@ data class OverviewResponse(
     @SerializedName("200DayMovingAverage") val day200MovingAverage: String,
     @SerializedName("SharesOutstanding") val sharesOutstanding: String,
     @SerializedName("DividendDate") val dividendDate: String,
-    @SerializedName("ExDividendDate") val exDividendDate: String
+    @SerializedName("ExDividendDate") val exDividendDate: String,
+    val timeStamp : Long = System.currentTimeMillis()
 )

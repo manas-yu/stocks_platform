@@ -2,7 +2,6 @@ package com.example.stock_platform.data.remote.dto
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.stock_platform.domain.model.gainers_losers.MostActivelyTraded
 import com.example.stock_platform.domain.model.gainers_losers.TopGainer
 import com.example.stock_platform.domain.model.gainers_losers.TopLoser
 import com.google.gson.annotations.SerializedName

@@ -5,15 +5,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stock_platform.domain.model.error_model.ErrorModel
 import com.example.stock_platform.domain.model.search.BestMatch
 import com.example.stock_platform.domain.usecases.stocks.StockUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -70,6 +67,10 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = _state.value.copy(isRecentSearchesLoading = true)
 
+            // Clear older searches and overviews
+            stockUseCases.deleteOlderSearches()
+            stockUseCases.deleteOlderOverviews()
+
             // Subscribe to Flow of recent searches
             stockUseCases.getRecentSearches().collect { searchResults ->
                 _state.value = _state.value.copy(
@@ -77,7 +78,6 @@ class HomeViewModel @Inject constructor(
                     isRecentSearchesLoading = false
                 )
             }
-            stockUseCases.deleteOlderSearches()
         }
     }
 

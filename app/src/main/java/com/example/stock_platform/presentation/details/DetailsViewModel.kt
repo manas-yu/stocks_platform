@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.yml.charts.common.extensions.isNotNull
 import com.example.stock_platform.domain.model.error_model.ErrorModel
 import com.example.stock_platform.domain.usecases.stocks.StockUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,15 +48,25 @@ class DetailsViewModel @Inject constructor(
                 isLoading = true,
                 error = null
             )
-
+            val recentResult = stockUseCases.getCachedOverview(symbol)
+            if (recentResult.isNotNull()) {
+                _state.value = _state.value.copy(
+                    stockDetails = recentResult,
+                    isLoading = false
+                )
+                return@launch
+            }
             when (val result = stockUseCases.getCompanyOverview(symbol)) {
                 is ErrorModel.Success -> {
                     Log.e("DetailsViewModel", "getCompanyOverview: ${result.data}")
                     val data = result.data
-                    _state.value = _state.value.copy(
-                        stockDetails = data,
-                        isLoading = false
-                    )
+                    data?.let {
+                        _state.value = _state.value.copy(
+                            stockDetails = data,
+                            isLoading = false
+                        )
+                        stockUseCases.insertOverview(data.copy(timeStamp = System.currentTimeMillis()))
+                    }
                 }
 
                 is ErrorModel.Error -> {
