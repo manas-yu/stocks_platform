@@ -124,7 +124,7 @@ fun StockPriceChart(
                                     radius = 4.dp
                                 ),
                                 ShadowUnderLine(
-                                    alpha = 0.3f,
+                                    alpha = 0.4f,
                                     brush = Brush.verticalGradient(
                                         colors = listOf(
                                             chartColor.copy(alpha = 0.3f),
@@ -134,6 +134,7 @@ fun StockPriceChart(
                                 ),
                                 SelectionHighlightPopUp(
                                     backgroundColor = MaterialTheme.colorScheme.surface,
+                                    labelColor = MaterialTheme.colorScheme.onSurface,
                                     popUpLabel = { x, y ->
                                         val hour = 9 + (x.toInt() * 30) / 60
                                         val minute = (x.toInt() * 30) % 60

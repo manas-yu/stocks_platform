@@ -28,7 +28,7 @@ class StocksRepositoryImpl(
             }
             ErrorModel.Success(response)
         } catch (e: Exception) {
-            ErrorModel.Error(e)
+            ErrorModel.Error(Exception("Unknown Error Occurred"))
         }
     }
 
@@ -41,7 +41,7 @@ class StocksRepositoryImpl(
             }
             ErrorModel.Success(overview)
         } catch (e: Exception) {
-            ErrorModel.Error(e)
+            ErrorModel.Error(Exception("Unknown Error Occurred"))
         }
     }
 
@@ -58,7 +58,7 @@ class StocksRepositoryImpl(
             emit(ErrorModel.Success(response.bestMatches))
 
         } catch (e: Exception) {
-            emit(ErrorModel.Error(e))
+            emit(ErrorModel.Error(Exception("Unknown Error Occurred")))
         }
     }
 
