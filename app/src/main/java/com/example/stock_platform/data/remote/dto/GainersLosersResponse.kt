@@ -13,5 +13,5 @@ data class GainersLosersResponse(
     val metadata: String,
     @SerializedName("top_gainers") val topGainers: List<TopGainer>,
     @SerializedName("top_losers") val topLosers: List<TopLoser>,
-    val timeStamp : Long = System.currentTimeMillis()
+    val timeStamp: Long = System.currentTimeMillis()
 )

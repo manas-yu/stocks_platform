@@ -93,6 +93,7 @@ fun ViewAllScreen(
                             }
                         )
                     }
+
                     ViewAllType.TOP_GAINERS -> {
                         StockItemsView(
                             stockItems = state.topGainers,
@@ -104,6 +105,7 @@ fun ViewAllScreen(
                             }
                         )
                     }
+
                     ViewAllType.TOP_LOSERS -> {
                         StockItemsView(
                             stockItems = state.topLosers,
@@ -115,6 +117,7 @@ fun ViewAllScreen(
                             }
                         )
                     }
+
                     null -> {
                         // Handle null case
                     }
@@ -133,7 +136,13 @@ fun RecentSearchesList(
 ) {
     val displayedItems = recentSearches.take(displayCount)
     val hasMoreItems = recentSearches.size > displayCount
-
+    if (recentSearches.isEmpty()) {
+        EmptyContent(
+            alphaAnim = 0.3f,
+            message = "No recent searches",
+            iconId = R.drawable.ic_search_document
+        )
+    }
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = 8.dp)
@@ -162,7 +171,13 @@ fun StockItemsView(
 ) {
     val displayedItems = stockItems.take(displayCount)
     val hasMoreItems = stockItems.size > displayCount
-
+    if (stockItems.isEmpty()) {
+        EmptyContent(
+            alphaAnim = 0.3f,
+            message = "No stock items available",
+            iconId = R.drawable.ic_search_document
+        )
+    }
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(8.dp)

@@ -57,5 +57,5 @@ data class OverviewResponse(
     @SerializedName("SharesOutstanding") val sharesOutstanding: String,
     @SerializedName("DividendDate") val dividendDate: String,
     @SerializedName("ExDividendDate") val exDividendDate: String,
-    val timeStamp : Long = System.currentTimeMillis()
+    val timeStamp: Long = System.currentTimeMillis()
 )

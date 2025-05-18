@@ -43,11 +43,11 @@ fun SearchScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        Column  {
+        Column {
             IconButton(onClick = { navigateBack() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back_arrow),
-                    tint= MaterialTheme.colorScheme.onSurface,
+                    tint = MaterialTheme.colorScheme.onSurface,
                     contentDescription = null
                 )
             }

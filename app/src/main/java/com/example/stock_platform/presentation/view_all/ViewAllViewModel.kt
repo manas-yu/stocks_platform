@@ -36,9 +36,11 @@ class ViewAllViewModel @Inject constructor(
                     displayItemCount = _state.value.displayItemCount + _state.value.pageSize
                 )
             }
+
             is ViewAllEvent.Refresh -> {
                 loadData()
             }
+
             is ViewAllEvent.StockClicked, is ViewAllEvent.NavigateBack -> {
                 // These events will be handled in the UI layer
             }
@@ -64,7 +66,7 @@ class ViewAllViewModel @Inject constructor(
             val searchResults = stockUseCases.getRecentSearches().first()
             if (searchResults.isEmpty()) {
                 _state.value = _state.value.copy(
-                    error = "No Recent Searches Found",
+                    recentSearches = emptyList(),
                     isLoading = false
                 )
             } else {
@@ -82,7 +84,7 @@ class ViewAllViewModel @Inject constructor(
             Log.d("HomeViewModel", "Loading top gainers and losers")
             val recentResult = stockUseCases.getMostRecentGainersLosers()
 
-            if(_state.value.viewAllType == ViewAllType.TOP_GAINERS){
+            if (_state.value.viewAllType == ViewAllType.TOP_GAINERS) {
                 if (recentResult != null) {
                     if (recentResult.topGainers.isEmpty()) {
                         _state.value = _state.value.copy(

@@ -6,7 +6,7 @@ import com.example.stock_platform.domain.repository.StocksRepository
 class InsertOverview(
     private val stocksRepository: StocksRepository
 ) {
-    suspend operator fun invoke(overview:OverviewResponse) {
+    suspend operator fun invoke(overview: OverviewResponse) {
         stocksRepository.insertOverview(overview)
     }
 }

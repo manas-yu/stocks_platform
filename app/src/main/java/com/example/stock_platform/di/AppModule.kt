@@ -37,7 +37,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideStocksApi():StocksApi{
+    fun provideStocksApi(): StocksApi {
         return Retrofit.Builder().baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -51,7 +51,7 @@ object AppModule {
         searchDao: SearchDao,
         gainersLosersDao: GainersLosersDao,
         overviewDao: OverviewDao
-    ):StocksRepository=StocksRepositoryImpl(stocksApi,searchDao,gainersLosersDao,overviewDao)
+    ): StocksRepository = StocksRepositoryImpl(stocksApi, searchDao, gainersLosersDao, overviewDao)
 
     @Provides
     @Singleton
@@ -80,7 +80,7 @@ object AppModule {
     ): StocksDatabase {
         return Room.databaseBuilder(
             context = application,
-            klass=StocksDatabase::class.java,
+            klass = StocksDatabase::class.java,
             "stocks_database"
         ).addTypeConverter(StocksTypeConvertor()).fallbackToDestructiveMigration().build()
     }

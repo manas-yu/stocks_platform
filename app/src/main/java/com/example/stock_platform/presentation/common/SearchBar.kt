@@ -42,8 +42,8 @@ fun SearchBar(
         MutableInteractionSource()
     }
     val isClicked = interactionSource.collectIsPressedAsState().value
-    LaunchedEffect(key1 = isClicked){
-        if(isClicked){
+    LaunchedEffect(key1 = isClicked) {
+        if (isClicked) {
             onClick?.invoke()
         }
     }

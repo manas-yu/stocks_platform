@@ -40,7 +40,8 @@ fun StockCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp).clickable { onClick() },
+            .padding(8.dp)
+            .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)

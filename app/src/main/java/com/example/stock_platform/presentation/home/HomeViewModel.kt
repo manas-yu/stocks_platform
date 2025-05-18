@@ -85,7 +85,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             Log.d("HomeViewModel", "Loading top gainers and losers")
             val recentResult = stockUseCases.getMostRecentGainersLosers()
-            if (recentResult != null&&System.currentTimeMillis() - recentResult.timeStamp < 3600000) {
+            if (recentResult != null && System.currentTimeMillis() - recentResult.timeStamp < 3600000) {
                 Log.d(
                     "HomeViewModel",
                     "Loaded recent top gainers and losers from local database ${recentResult.topGainers}"

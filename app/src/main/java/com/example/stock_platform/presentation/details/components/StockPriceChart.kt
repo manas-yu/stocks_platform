@@ -139,7 +139,9 @@ fun StockPriceChart(
                                         val minute = (x.toInt() * 30) % 60
                                         val amPm = if (hour >= 12) "PM" else "AM"
                                         val displayHour = if (hour > 12) hour - 12 else hour
-                                        "$${DecimalFormat("#,##0.00").format(y)}\n$displayHour:${minute.toString().padStart(2, '0')} $amPm"
+                                        "$${DecimalFormat("#,##0.00").format(y)}\n$displayHour:${
+                                            minute.toString().padStart(2, '0')
+                                        } $amPm"
                                     },
                                 )
                             )
@@ -156,7 +158,9 @@ fun StockPriceChart(
                 )
 
                 LineChart(
-                    modifier = Modifier.fillMaxWidth().height(240.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(240.dp),
                     lineChartData = lineChartData
                 )
             }

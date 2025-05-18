@@ -28,17 +28,17 @@ fun NavGraph(startDestination: String) {
         ) {
             composable(route = Route.HomeScreen.route) {
                 val viewModel: HomeViewModel = hiltViewModel()
-               HomeScreen(
+                HomeScreen(
                     viewModel = viewModel,
                     navigateToSearch = {
                         navController.navigate(Route.SearchScreen.route)
                     },
                     navigateToDetails = {
-                        navigateToDetails(navController,it)
+                        navigateToDetails(navController, it)
                     },
-                   navigateToViewAll = {
-                          navigateToViewAll(navController,it.name)
-                   },
+                    navigateToViewAll = {
+                        navigateToViewAll(navController, it.name)
+                    },
                 )
             }
             composable(route = Route.SearchScreen.route) {
@@ -48,7 +48,7 @@ fun NavGraph(startDestination: String) {
                     viewModel = viewModel,
                     homeScreenViewModel = homeScreenViewModel,
                     navigateToDetails = { symbol ->
-                        navigateToDetails(navController,symbol)
+                        navigateToDetails(navController, symbol)
                     },
                     navigateBack = {
                         navController.popBackStack()
@@ -72,7 +72,7 @@ fun NavGraph(startDestination: String) {
                         navController.popBackStack()
                     },
                     onNavigateToStockDetail = { symbol ->
-                        navigateToDetails(navController,symbol)
+                        navigateToDetails(navController, symbol)
                     }
                 )
             }
@@ -81,10 +81,10 @@ fun NavGraph(startDestination: String) {
 
 }
 
-private fun navigateToDetails(navController:NavController, symbol: String) {
+private fun navigateToDetails(navController: NavController, symbol: String) {
     navController.navigate(Route.DetailScreen.route + "/$symbol")
 }
 
-private fun navigateToViewAll(navController:NavController, viewAllType: String) {
+private fun navigateToViewAll(navController: NavController, viewAllType: String) {
     navController.navigate(Route.ViewAllScreen.route + "/$viewAllType")
 }

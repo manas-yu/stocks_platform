@@ -49,6 +49,7 @@ class SearchViewModel @Inject constructor(
                             error = null
                         )
                     }
+
                     is ErrorModel.Success -> {
                         val sortedStocks = result.data?.sortedByDescending {
                             it.matchScore.toDoubleOrNull() ?: 0.0
@@ -60,6 +61,7 @@ class SearchViewModel @Inject constructor(
                             error = null
                         )
                     }
+
                     is ErrorModel.Error -> {
                         _state.value = _state.value.copy(
                             isLoading = false,

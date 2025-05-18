@@ -12,7 +12,7 @@ import com.example.stock_platform.domain.model.search.BestMatch
     version = 3
 )
 @TypeConverters(StocksTypeConvertor::class)
-abstract class StocksDatabase: RoomDatabase()  {
+abstract class StocksDatabase : RoomDatabase() {
     abstract val gainersLosersDao: GainersLosersDao
     abstract val searchDao: SearchDao
     abstract val overviewDao: OverviewDao

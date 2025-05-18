@@ -8,6 +8,6 @@ data class HomeState(
     val topLosers: List<StockItem> = emptyList(),
     val recentSearches: List<BestMatch> = emptyList(),
     val isGainersLosersLoading: Boolean = false,
-    val isRecentSearchesLoading:Boolean = false,
+    val isRecentSearchesLoading: Boolean = false,
     val error: String? = null
 )

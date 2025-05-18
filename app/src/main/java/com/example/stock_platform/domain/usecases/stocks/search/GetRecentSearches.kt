@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 class GetRecentSearches(
     private val stocksRepository: StocksRepository
 ) {
-     operator fun invoke(): Flow<List<BestMatch>> {
+    operator fun invoke(): Flow<List<BestMatch>> {
         val oneHourAgo = System.currentTimeMillis() - 60 * 60 * 1000
         return stocksRepository.getRecentSearches(oneHourAgo)
     }

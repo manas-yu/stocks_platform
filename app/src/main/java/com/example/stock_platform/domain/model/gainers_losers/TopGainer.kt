@@ -8,4 +8,4 @@ data class TopGainer(
     override val price: String,
     override val ticker: String,
     override val volume: String
-):StockItem
+) : StockItem

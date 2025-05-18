@@ -7,6 +7,6 @@ class GetMostRecentGainersLosers(
     private val stocksRepository: StocksRepository
 ) {
     suspend operator fun invoke(): GainersLosersResponse? {
-       return stocksRepository.getMostRecentGainersLosers()
+        return stocksRepository.getMostRecentGainersLosers()
     }
 }

@@ -20,7 +20,7 @@ import com.example.stock_platform.R
 @Composable
 fun DetailsTopBar(
     onBackClick: () -> Unit,
-    symbol:String
+    symbol: String
 ) {
     TopAppBar(
         navigationIcon = {

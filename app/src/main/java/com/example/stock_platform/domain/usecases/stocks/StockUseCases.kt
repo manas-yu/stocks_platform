@@ -21,7 +21,7 @@ data class StockUseCases(
     val deleteOlderSearches: DeleteOlderSearches,
     val getMostRecentGainersLosers: GetMostRecentGainersLosers,
     val upsertGainersLosers: UpsertGainersLosers,
-    val getCachedOverview : GetCachedOverview,
-    val insertOverview : InsertOverview,
+    val getCachedOverview: GetCachedOverview,
+    val insertOverview: InsertOverview,
     val deleteOlderOverviews: DeleteOlderOverviews
 )
